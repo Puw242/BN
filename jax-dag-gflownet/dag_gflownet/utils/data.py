@@ -45,7 +45,7 @@ def get_data(name, args, rng=default_rng()):
         )
         data_all = pd.concat([data_all, t], axis=0)
     userd_attr = [
-        "TOT_INJ",
+        # "TOT_INJ",
         "REST1_0",
         "ALCFLAG",
         "MEDCAUSE",
@@ -60,7 +60,7 @@ def get_data(name, args, rng=default_rng()):
         # "V1DIRCDE",
         "ACCTYPE",
         # "V2DIRCDE",
-        "SEVERITY",
+        # "SEVERITY",
         "RDSURF",
         "LOC_TYPE",
         # "RODWYCLS",

@@ -59,7 +59,8 @@ def sample_erdos_renyi_linear_gaussian(
         "rb",
     ) as file:
         graph = pickle.load(file)
-        graph.add_node("SEVERITY")
+        # graph.add_node("SEVERITY")
+        graph.remove_node("TOT_INJ")
         graph.add_node("ACCTYPE")
         nodes = list(graph.nodes())
         for i in range(len(nodes)):
