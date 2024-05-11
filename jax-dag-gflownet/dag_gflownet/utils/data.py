@@ -44,34 +44,34 @@ def get_data(name, args, rng=default_rng()):
             + ".csv"
         )
         data_all = pd.concat([data_all, t], axis=0)
-    userd_attr = [
-        # "TOT_INJ",
-        "REST1_0",
-        "ALCFLAG",
-        "MEDCAUSE",
-        "SPEED_LIMIT",
-        # "CITY",
-        "V1CMPDIR",
-        "V1EVENT1",
-        "V2CMPDIR",
-        "V2EVENT1",
-        "NUMVEHS",
-        "ST_FUNC",
-        # "V1DIRCDE",
-        "ACCTYPE",
-        # "V2DIRCDE",
-        # "SEVERITY",
-        "RDSURF",
-        "LOC_TYPE",
-        # "RODWYCLS",
-        # "REST1_1",
-        "ROUTE_MILEPOST",
-        "LIGHT",
-        "TIME",
-        "WEEKDAY",
-        "NO_PEDS",
-    ]
-    data_all = data_all.loc[:, userd_attr]
+    # userd_attr = [
+    #     # "TOT_INJ",
+    #     "REST1_0",
+    #     "ALCFLAG",
+    #     "MEDCAUSE",
+    #     "SPEED_LIMIT",
+    #     # "CITY",
+    #     "V1CMPDIR",
+    #     "V1EVENT1",
+    #     "V2CMPDIR",
+    #     "V2EVENT1",
+    #     "NUMVEHS",
+    #     "ST_FUNC",
+    #     # "V1DIRCDE",
+    #     "ACCTYPE",
+    #     # "V2DIRCDE",
+    #     # "SEVERITY",
+    #     "RDSURF",
+    #     "LOC_TYPE",
+    #     # "RODWYCLS",
+    #     # "REST1_1",
+    #     "ROUTE_MILEPOST",
+    #     "LIGHT",
+    #     "TIME",
+    #     "WEEKDAY",
+    #     "NO_PEDS",
+    # ]
+    # data_all = data_all.loc[:, userd_attr]
     print(data_all)
     data = data_all
     # if name == 'erdos_renyi_lingauss':

@@ -3,7 +3,7 @@ import pandas as pd
 import json
 import pickle
 from pgmpy.models import BayesianNetwork
-from pgmpy.estimators import MaximumLikelihoodEstimator
+from pgmpy.estimators import MaximumLikelihoodEstimator, BayesianEstimator
 import networkx as nx
 import matplotlib.pyplot as plt
 
@@ -40,7 +40,7 @@ def plot_confusion_matrix(cm, labels_name, title):
 
 
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/INJ_model.pkl", "rb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/ACC2_model.pkl", "rb"
 ) as f:
     loaded_model = pickle.load(f)
 
@@ -55,13 +55,13 @@ data3 = pd.read_csv(
 )
 
 data4 = pd.read_csv(
-    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_7.csv"
+    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_11.csv"
 )
 data_train = pd.concat([data1, data2, data3], axis=0)
 data_test = data4
 
 data_all = pd.DataFrame()
-for i in range(1, 8):
+for i in range(1, 12):
     t = pd.read_csv(
         "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_"
         + str(i)
@@ -82,7 +82,7 @@ for key, _ in data_all.items():
     state_names[key] = list(set(data_all[key]))
 
 
-target = "TOT_INJ"
+target = "ACCTYPE"
 data_t = data_test.drop([target], axis=1).iloc[:100, :]
 
 
@@ -119,26 +119,26 @@ res_acc = []
 #     print(acc)
 #     res_acc.append(acc)
 data_train = data_train.reset_index(drop=True)
-print(data_all)
+
 model.fit(
-    data_all.iloc[:10000, :],
-    estimator=MaximumLikelihoodEstimator,
+    data_all,
+    estimator=BayesianEstimator,
     n_jobs=-1,
     state_names=state_names,
 )
 print("------")
 
-print(model.get_markov_blanket('TOT_INJ'))
+print(model.get_markov_blanket("ACCTYPE"))
 
-# r = model.predict(data_test.drop([target], axis=1))
-# gt = data_test.loc[:, [target]].values.tolist()
-# pre = r[target].tolist()
-# labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-# # labels = [0, 1, 2, 3, 4]
-# cm = confusion_matrix(gt, pre, labels=labels)
+r = model.predict(data_test.drop([target], axis=1))
+gt = data_test.loc[:, [target]].values.tolist()
+pre = r[target].tolist()
+labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+# labels = [0, 1, 2, 3, 4]
+cm = confusion_matrix(gt, pre, labels=labels)
 
 # print(pre)
-# print(calculate_accuracy(data_test.loc[:, [target]], r))
+print(calculate_accuracy(data_test.loc[:, [target]], r))
 
-# plot_confusion_matrix(cm, labels, "confusion_matrix")
+plot_confusion_matrix(cm, labels, "confusion_matrix")
 # model.save("trained.bif", filetype="bif")

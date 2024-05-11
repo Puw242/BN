@@ -32,7 +32,7 @@ adj_array = adj_array[np.argmin(np.sum(adj_array, axis=(1, 2)))]
 # plt.show()
 
 node_names = [
-    "TOT_INJ",
+    # "TOT_INJ",
     "REST1_0",
     "ALCFLAG",
     "MEDCAUSE",
@@ -47,7 +47,7 @@ node_names = [
     # "V1DIRCDE",
     "ACCTYPE",
     # "V2DIRCDE",
-    "SEVERITY",
+    # "SEVERITY",
     "RDSURF",
     "LOC_TYPE",
     # "RODWYCLS",
@@ -65,7 +65,7 @@ for i in range(len(adj_array)):
     for j in range(len(adj_array[i])):
         if adj_array[i][j] == 1:  # 如果i到j有边
             model.add_edge(node_names[i], node_names[j])
-model.remove_nodes_from(['TOT_INJ','ACCTYPE'])
+# model.remove_nodes_from(['TOT_INJ','ACCTYPE'])
 G = nx.DiGraph()
 G.add_edges_from(model.edges())
 nx.draw(G, with_labels=True)
@@ -74,7 +74,7 @@ plt.show()
 
 
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/SEV_model.pkl", "wb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/ACC2_model.pkl", "wb"
 ) as f:
     pickle.dump(model, f)
 
