@@ -39,9 +39,9 @@ def plot_confusion_matrix(cm, labels_name, title):
     plt.show()
 
 
-target = "TOT_INJ"
+target = "ACCTYPE"
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/INJ_model.pkl", "rb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/ACC_model.pkl", "rb"
 ) as f:
     loaded_model = pickle.load(f)
 
@@ -134,14 +134,14 @@ model.fit(
 )
 print("------")
 
-print(model.get_markov_blanket("TOT_INJ"))
+print(model.get_markov_blanket("ACCTYPE"))
 
 r = model.predict(data_test.drop([target], axis=1))
 gt = data_test.loc[:, [target]].values.tolist()
 pre = r[target].tolist()
-# labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 # labels = [0, 1, 2, 3, 4]
-labels = [0,1,2,3]
+# labels = [0,1,2,3]
 cm = confusion_matrix(gt, pre, labels=labels)
 
 # print(pre)

@@ -3,12 +3,16 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
 from pgmpy.models import BayesianNetwork
+from collections import Counter
 
 adj_array = np.load(
     "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/jax-dag-gflownet/output/posterior.npy"
 )
-print(np.argmin(np.sum(adj_array, axis=(1, 2))))
-adj_array = adj_array[np.argmin(np.sum(adj_array, axis=(1, 2)))]
+tupled_arrays = [tuple(map(tuple, adj_array[i])) for i in range(adj_array.shape[0])]
+counter = Counter(tupled_arrays)
+most_common_array, count = counter.most_common(1)[0]
+print(count)
+adj_array = most_common_array
 # G = nx.from_numpy_array(adj_array)
 
 # with open(
@@ -32,7 +36,7 @@ adj_array = adj_array[np.argmin(np.sum(adj_array, axis=(1, 2)))]
 # plt.show()
 
 node_names = [
-    # "TOT_INJ",
+    "TOT_INJ",
     "REST1_0",
     "ALCFLAG",
     "MEDCAUSE",
@@ -47,16 +51,19 @@ node_names = [
     # "V1DIRCDE",
     "ACCTYPE",
     # "V2DIRCDE",
-    # "SEVERITY",
+    "SEVERITY",
     "RDSURF",
     "LOC_TYPE",
     # "RODWYCLS",
-    # "REST1_1",
+    "REST1_1",
     "ROUTE_MILEPOST",
     "LIGHT",
     "TIME",
     "WEEKDAY",
     "NO_PEDS",
+    "SEX_0",
+    "SEX_1",
+    "TOTAL_AADT",
 ]
 
 model = BayesianNetwork()
@@ -65,7 +72,7 @@ for i in range(len(adj_array)):
     for j in range(len(adj_array[i])):
         if adj_array[i][j] == 1:  # 如果i到j有边
             model.add_edge(node_names[i], node_names[j])
-# model.remove_nodes_from(['TOT_INJ','ACCTYPE'])
+model.remove_nodes_from(['SEVERITY','TOT_INJ'])
 G = nx.DiGraph()
 G.add_edges_from(model.edges())
 nx.draw(G, with_labels=True)
@@ -74,7 +81,6 @@ plt.show()
 
 
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/ACC2_model.pkl", "wb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/ACC_model.pkl", "wb"
 ) as f:
     pickle.dump(model, f)
-
