@@ -42,7 +42,7 @@ class BDeScore(BaseScore):
         super().__init__(data, prior)
 
         self.state_names = {
-            column: sorted(self.data[column].cat.categories.tolist())
+            column: sorted(self.data[column].astype('category').cat.categories.tolist())
             for column in self.data.columns
         }
 
