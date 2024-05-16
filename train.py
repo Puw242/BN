@@ -39,35 +39,45 @@ def plot_confusion_matrix(cm, labels_name, title):
     plt.show()
 
 
+target = "TOT_INJ"
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/ACC2_model.pkl", "rb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/INJ_model.pkl", "rb"
 ) as f:
     loaded_model = pickle.load(f)
 
-data1 = pd.read_csv(
-    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_1.csv"
+# data1 = pd.read_csv(
+#     "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_1.csv"
+# )
+# data2 = pd.read_csv(
+#     "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_2.csv"
+# )
+# data3 = pd.read_csv(
+#     "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_3.csv"
+# )
+
+# data4 = pd.read_csv(
+#     "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_11.csv"
+# )
+# data_train = pd.concat([data1, data2, data3], axis=0)
+# data_test = data4
+# data_all = pd.DataFrame()
+# for i in range(1, 12):
+#     t = pd.read_csv(
+#         "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_"
+#         + str(i)
+#         + ".csv"
+#     )
+#     data_all = pd.concat([data_all, t], axis=0)
+
+
+data_train = pd.read_csv(
+    "/Users/puw/Workspace/Vscode_Python/output/WA/split_data/train.csv"
 )
-data2 = pd.read_csv(
-    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_2.csv"
-)
-data3 = pd.read_csv(
-    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_3.csv"
+data_test = pd.read_csv(
+    "/Users/puw/Workspace/Vscode_Python/output/WA/split_data/test.csv"
 )
 
-data4 = pd.read_csv(
-    "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_11.csv"
-)
-data_train = pd.concat([data1, data2, data3], axis=0)
-data_test = data4
-
-data_all = pd.DataFrame()
-for i in range(1, 12):
-    t = pd.read_csv(
-        "/Users/puw/Workspace/Vscode_Python/output/WA/baseline_data/digit/wa_2022_"
-        + str(i)
-        + ".csv"
-    )
-    data_all = pd.concat([data_all, t], axis=0)
+data_all = pd.concat([data_train, data_test], axis=0)
 
 
 # print(loaded_model.edges())
@@ -80,10 +90,6 @@ data_train = data_train.loc[:, list(model.nodes())]
 state_names = {}
 for key, _ in data_all.items():
     state_names[key] = list(set(data_all[key]))
-
-
-target = "ACCTYPE"
-data_t = data_test.drop([target], axis=1).iloc[:100, :]
 
 
 def calculate_accuracy(df_true, df_pred):
@@ -121,20 +127,21 @@ res_acc = []
 data_train = data_train.reset_index(drop=True)
 
 model.fit(
-    data_all,
+    data_train,
     estimator=BayesianEstimator,
     n_jobs=-1,
     state_names=state_names,
 )
 print("------")
 
-print(model.get_markov_blanket("ACCTYPE"))
+print(model.get_markov_blanket("TOT_INJ"))
 
 r = model.predict(data_test.drop([target], axis=1))
 gt = data_test.loc[:, [target]].values.tolist()
 pre = r[target].tolist()
-labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+# labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 # labels = [0, 1, 2, 3, 4]
+labels = [0,1,2,3]
 cm = confusion_matrix(gt, pre, labels=labels)
 
 # print(pre)
