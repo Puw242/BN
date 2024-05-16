@@ -35,15 +35,18 @@ def get_data(name, args, rng=default_rng()):
         obs_noise=0.1,
         rng=rng,
     )
-    score = "bge"
+    score = "bde"
     data_all = pd.DataFrame()
-    for i in range(1, 13):
-        t = pd.read_csv(
-                "../data/digit/wa_2022_"
-            + str(i)
-            + ".csv"
-        )
-        data_all = pd.concat([data_all, t], axis=0)
+    data_te = pd.read_csv("../data/test.csv")
+    data_tr = pd.read_csv("../data/train.csv")
+    data_all = pd.concat([data_te, data_tr])
+    # for i in range(1, 13):
+    #     t = pd.read_csv(
+    #             "../data/digit/wa_2022_"
+    #         + str(i)
+    #         + ".csv"
+    #     )
+    #     data_all = pd.concat([data_all, t], axis=0)
     userd_attr = [
         "TOT_INJ",
         "REST1_0",
@@ -70,6 +73,9 @@ def get_data(name, args, rng=default_rng()):
         "TIME",
         "WEEKDAY",
         "NO_PEDS",
+        "SEX_0",
+        "SEX_1",
+        "TOTAL_AADT",
     ]
     data_all = data_all.loc[:, userd_attr]
     print(data_all)
