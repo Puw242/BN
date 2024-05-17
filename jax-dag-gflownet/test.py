@@ -72,7 +72,8 @@ for i in range(len(adj_array)):
     for j in range(len(adj_array[i])):
         if adj_array[i][j] == 1:  # 如果i到j有边
             model.add_edge(node_names[i], node_names[j])
-model.remove_nodes_from(['SEVERITY','TOT_INJ'])
+print(model.edges())
+model.remove_nodes_from(['SEVERITY','ACCTYPE'])
 G = nx.DiGraph()
 G.add_edges_from(model.edges())
 nx.draw(G, with_labels=True)
@@ -80,7 +81,7 @@ plt.show()
 # =====inj=====
 
 
-with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/ACC_model.pkl", "wb"
-) as f:
-    pickle.dump(model, f)
+# with open(
+#     "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/ACC_model.pkl", "wb"
+# ) as f:
+#     pickle.dump(model, f)
