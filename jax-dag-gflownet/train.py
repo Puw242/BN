@@ -29,7 +29,7 @@ def main(args):
         scorer=scorer,
         num_workers=args.num_workers,
         context=args.mp_context,
-        max_parents=3
+        max_parents=4
     )
 
     # Create the replay buffer
