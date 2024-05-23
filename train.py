@@ -39,9 +39,9 @@ def plot_confusion_matrix(cm, labels_name, title):
     plt.show()
 
 
-target = "TOT_INJ"
+target = "SEVERITY"
 with open(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/INJ_model.pkl", "rb"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/SEV_model.pkl", "rb"
 ) as f:
     loaded_model = pickle.load(f)
 
@@ -99,11 +99,6 @@ def calculate_accuracy(df_true, df_pred):
     return accuracy
 
 
-G = nx.DiGraph()
-G.add_edges_from(loaded_model.edges())
-nx.draw(G, with_labels=True)
-plt.show()
-
 res_acc = []
 
 # G.fit_update(data=data_test.iloc[:5, :], n_jobs=-1)
@@ -125,27 +120,39 @@ res_acc = []
 #     print(acc)
 #     res_acc.append(acc)
 
+# model.add_edge("REST1_0", "TOT_INJ")
+model.add_edge(
+    "ACCTYPE",
+    "V1EVENT1",
+)
+
 model.fit(
     data_train,
     # estimator=BayesianEstimator,
     n_jobs=-1,
     state_names=state_names,
 )
-print("------")
-print(model.get_cpds('TOT_INJ'))
 
-# print(model.get_markov_blanket("ACCTYPE"))
+G = nx.DiGraph()
+G.add_edges_from(model.edges())
+nx.draw(G, with_labels=True)
+plt.show()
+
+print("------")
+print(model.get_cpds(target))
+
+print(model.get_markov_blanket(target))
 
 r = model.predict(data_test.drop([target], axis=1))
 gt = data_test.loc[:, [target]].values.tolist()
 pre = r[target].tolist()
 labels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 # labels = [0, 1, 2, 3, 4]
-# labels = [0,1,2,3]
+# labels = [0, 1, 2, 3]
 cm = confusion_matrix(gt, pre, labels=labels)
 
 # print(pre)
 print(calculate_accuracy(data_test.loc[:, [target]], r))
 
 plot_confusion_matrix(cm, labels, "confusion_matrix")
-# model.save("trained.bif", filetype="bif")
+model.save("SEV.bif", filetype="bif")

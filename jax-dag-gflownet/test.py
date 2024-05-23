@@ -6,7 +6,7 @@ from pgmpy.models import BayesianNetwork
 from collections import Counter
 
 adj_array = np.load(
-    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/jax-dag-gflownet/output/posterior.npy"
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/jax-dag-gflownet/output/posterior_3.npy"
 )
 tupled_arrays = [tuple(map(tuple, adj_array[i])) for i in range(adj_array.shape[0])]
 counter = Counter(tupled_arrays)
@@ -61,9 +61,6 @@ node_names = [
     "TIME",
     "WEEKDAY",
     "NO_PEDS",
-    "SEX_0",
-    "SEX_1",
-    "TOTAL_AADT",
 ]
 
 model = BayesianNetwork()
@@ -72,8 +69,8 @@ for i in range(len(adj_array)):
     for j in range(len(adj_array[i])):
         if adj_array[i][j] == 1:  # 如果i到j有边
             model.add_edge(node_names[i], node_names[j])
-print(model.edges())
-model.remove_nodes_from(['SEVERITY','ACCTYPE'])
+
+model.remove_nodes_from(["TOT_INJ", "ACCTYPE"])
 G = nx.DiGraph()
 G.add_edges_from(model.edges())
 nx.draw(G, with_labels=True)
@@ -81,7 +78,7 @@ plt.show()
 # =====inj=====
 
 
-# with open(
-#     "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/new/ACC_model.pkl", "wb"
-# ) as f:
-#     pickle.dump(model, f)
+with open(
+    "/Users/puw/Workspace/Vscode_Python/BayesianNetwork/model/SEV_model.pkl", "wb"
+) as f:
+    pickle.dump(model, f)
